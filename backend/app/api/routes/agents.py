@@ -92,7 +92,8 @@ async def create_agent(
         greeting_message=body.greeting_message,
         language=body.language,
         voice_id=body.voice_id,
-        tools_enabled=body.tools_enabled or {
+        tools_enabled=body.tools_enabled
+        or {
             "book_appointment": False,
             "check_order_status": False,
             "transfer_to_human": True,

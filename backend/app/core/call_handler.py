@@ -125,9 +125,7 @@ class CallHandler:
             # Update call record in DB
             from sqlalchemy import update
 
-            duration = int(
-                (datetime.utcnow() - state.started_at).total_seconds()
-            )
+            duration = int((datetime.utcnow() - state.started_at).total_seconds())
             await self._db.execute(
                 update(Call)
                 .where(Call.id == call_id)

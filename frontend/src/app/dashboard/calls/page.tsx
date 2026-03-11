@@ -103,7 +103,7 @@ export default function CallsPage() {
               {
                 key: "caller_number",
                 header: "Caller",
-                render: (v, row) => (v as string) || (row as Call).called_number || "—",
+                render: (v, row) => (v as string) || (row as unknown as Call).called_number || "—",
               },
               {
                 key: "duration_seconds",
@@ -141,7 +141,7 @@ export default function CallsPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => openCall(row as Call)}
+                    onClick={() => openCall(row as unknown as Call)}
                   >
                     View
                   </Button>

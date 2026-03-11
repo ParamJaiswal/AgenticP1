@@ -39,7 +39,9 @@ class VoiceAgent:
     def _build_system_prompt(self) -> str:
         """Build the system prompt from agent configuration."""
         personality = self._config.get("personality", "professional")
-        personality_desc = PERSONALITY_PROMPTS.get(personality, PERSONALITY_PROMPTS["professional"])
+        personality_desc = PERSONALITY_PROMPTS.get(
+            personality, PERSONALITY_PROMPTS["professional"]
+        )
 
         if self._config.get("custom_prompt"):
             personality_desc = self._config["custom_prompt"]
@@ -92,7 +94,15 @@ Important rules:
             return True  # No restriction = always open
 
         now = datetime.now()
-        day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        day_names = [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday",
+        ]
         today = day_names[now.weekday()]
 
         day_config = business_hours.get(today)

@@ -29,7 +29,9 @@ class TelephonyService:
         webhook_url: str | None = None,
     ) -> dict[str, Any]:
         """Initiate an outbound call."""
-        from_num = from_number or settings.TELNYX_PHONE_NUMBER or settings.TWILIO_PHONE_NUMBER
+        from_num = (
+            from_number or settings.TELNYX_PHONE_NUMBER or settings.TWILIO_PHONE_NUMBER
+        )
         if not from_num:
             raise ValueError("No from phone number configured")
 

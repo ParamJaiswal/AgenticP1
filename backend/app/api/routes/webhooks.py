@@ -12,7 +12,14 @@ from __future__ import annotations
 from typing import Annotated
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Request,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -205,7 +212,11 @@ async def audio_stream(
             if "bytes" in message and message["bytes"]:
                 audio_data = message["bytes"]
                 try:
-                    text, response_audio, should_transfer = await handler.process_audio_chunk(
+                    (
+                        text,
+                        response_audio,
+                        should_transfer,
+                    ) = await handler.process_audio_chunk(
                         call_id=call_id,
                         audio_data=audio_data,
                         agent_config=agent_config,

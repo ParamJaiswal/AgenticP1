@@ -53,7 +53,9 @@ def agent() -> VoiceAgent:
 async def test_escalation_keyword_triggers_transfer(agent: VoiceAgent) -> None:
     """'human' keyword should trigger escalation."""
     state = make_state()
-    response, should_transfer = await agent.process_turn(state, "I want to speak to a human")
+    response, should_transfer = await agent.process_turn(
+        state, "I want to speak to a human"
+    )
     assert should_transfer is True
 
 
@@ -74,7 +76,9 @@ async def test_normal_turn_no_escalation(agent: VoiceAgent) -> None:
     state = make_state()
     mock_response = "We have appointments available on Monday and Wednesday."
 
-    with patch.object(agent._llm, "chat", new_callable=AsyncMock, return_value=mock_response):
+    with patch.object(
+        agent._llm, "chat", new_callable=AsyncMock, return_value=mock_response
+    ):
         response, should_transfer = await agent.process_turn(
             state, "I would like to book a dental appointment"
         )

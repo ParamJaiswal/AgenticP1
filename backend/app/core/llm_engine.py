@@ -2,7 +2,7 @@
 
 Priority:
   1. Groq FREE API (Llama 3.1 8B / 3.3 70B) — $0/month, ultra-fast
-  2. Ollama local (any model, fully free) 
+  2. Ollama local (any model, fully free)
   3. Together AI ($0.18/1M tokens) — cheap fallback
   4. OpenAI GPT-4o-mini ($0.15/1M tokens) — quality fallback
 """

@@ -103,9 +103,7 @@ class STTEngine:
         finally:
             os.unlink(tmp_path)
 
-    async def _transcribe_faster_whisper(
-        self, audio_data: bytes, language: str
-    ) -> str:
+    async def _transcribe_faster_whisper(self, audio_data: bytes, language: str) -> str:
         """Use faster-whisper locally (CPU, INT8 quantized — free)."""
         import asyncio
 

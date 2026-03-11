@@ -27,13 +27,19 @@ class Call(Base):
     )
 
     # Call metadata
-    external_call_id: Mapped[str | None] = mapped_column(String(255), nullable=True)  # Telnyx/Twilio ID
-    direction: Mapped[str] = mapped_column(String(10), default="inbound")  # inbound | outbound
+    external_call_id: Mapped[str | None] = mapped_column(
+        String(255), nullable=True
+    )  # Telnyx/Twilio ID
+    direction: Mapped[str] = mapped_column(
+        String(10), default="inbound"
+    )  # inbound | outbound
     caller_number: Mapped[str | None] = mapped_column(String(20), nullable=True)
     called_number: Mapped[str | None] = mapped_column(String(20), nullable=True)
 
     # Status tracking
-    status: Mapped[str] = mapped_column(String(50), default="initiated")  # initiated|active|completed|failed|transferred
+    status: Mapped[str] = mapped_column(
+        String(50), default="initiated"
+    )  # initiated|active|completed|failed|transferred
 
     # Timing
     started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
@@ -43,9 +49,15 @@ class Call(Base):
     # AI analysis
     transcript: Mapped[str | None] = mapped_column(Text, nullable=True)
     summary: Mapped[str | None] = mapped_column(Text, nullable=True)
-    sentiment_score: Mapped[float | None] = mapped_column(Float, nullable=True)  # -1.0 to 1.0
-    sentiment_label: Mapped[str | None] = mapped_column(String(20), nullable=True)  # positive|neutral|negative
-    resolution: Mapped[str | None] = mapped_column(String(50), nullable=True)  # resolved|escalated|abandoned
+    sentiment_score: Mapped[float | None] = mapped_column(
+        Float, nullable=True
+    )  # -1.0 to 1.0
+    sentiment_label: Mapped[str | None] = mapped_column(
+        String(20), nullable=True
+    )  # positive|neutral|negative
+    resolution: Mapped[str | None] = mapped_column(
+        String(50), nullable=True
+    )  # resolved|escalated|abandoned
 
     # Recording
     recording_path: Mapped[str | None] = mapped_column(String(512), nullable=True)

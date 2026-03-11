@@ -9,9 +9,21 @@ from app.core.conversation_manager import ConversationState
 log = structlog.get_logger()
 
 ANGER_KEYWORDS = [
-    "angry", "furious", "terrible", "awful", "horrible", "useless",
-    "incompetent", "worst", "ridiculous", "unacceptable", "lawsuit",
-    "lawyer", "sue", "refund", "cancel",
+    "angry",
+    "furious",
+    "terrible",
+    "awful",
+    "horrible",
+    "useless",
+    "incompetent",
+    "worst",
+    "ridiculous",
+    "unacceptable",
+    "lawsuit",
+    "lawyer",
+    "sue",
+    "refund",
+    "cancel",
 ]
 
 

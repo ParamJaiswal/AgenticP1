@@ -92,9 +92,7 @@ async def upload_document(
     try:
         fname = file.filename or ""
         if fname.endswith(".pdf") or "pdf" in content_type:
-            chunks = await kb.add_pdf(
-                current_user.organization_id, data, doc.id, fname
-            )
+            chunks = await kb.add_pdf(current_user.organization_id, data, doc.id, fname)
         elif fname.endswith(".docx"):
             chunks = await kb.add_docx(
                 current_user.organization_id, data, doc.id, fname
@@ -162,9 +160,7 @@ async def search_knowledge_base(
 ) -> dict:
     """Search the knowledge base (test endpoint)."""
     kb = get_knowledge_base_service()
-    results = await kb.query(
-        current_user.organization_id, body.query, top_k=body.top_k
-    )
+    results = await kb.query(current_user.organization_id, body.query, top_k=body.top_k)
     return {"query": body.query, "results": results}
 
 
