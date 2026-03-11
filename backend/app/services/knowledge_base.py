@@ -135,7 +135,30 @@ class KnowledgeBaseService:
         self, organization_id: str, url: str, doc_id: str
     ) -> int:
         """Scrape URL and add content to knowledge base."""
+        import ipaddress
+        import re
+        import socket
+        from urllib.parse import urlparse
+
         import aiohttp
+
+        # Validate URL scheme and prevent SSRF by blocking private/internal addresses
+        parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            raise ValueError(f"Unsupported URL scheme: {parsed.scheme!r}. Only http/https are allowed.")
+
+        hostname = parsed.hostname or ""
+        if not hostname:
+            raise ValueError("URL must contain a valid hostname.")
+
+        # Resolve hostname and block private/loopback/reserved ranges
+        try:
+            resolved_ip = socket.getaddrinfo(hostname, None)[0][4][0]
+            ip = ipaddress.ip_address(resolved_ip)
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+                raise ValueError(f"Fetching from private/internal addresses is not allowed: {hostname}")
+        except (socket.gaierror, ValueError) as exc:
+            raise ValueError(f"Invalid or unresolvable URL hostname: {hostname}") from exc
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
@@ -144,8 +167,6 @@ class KnowledgeBaseService:
                 html = await resp.text()
 
         # Basic HTML stripping
-        import re
-
         text = re.sub(r"<[^>]+>", " ", html)
         text = re.sub(r"\s+", " ", text).strip()
 
