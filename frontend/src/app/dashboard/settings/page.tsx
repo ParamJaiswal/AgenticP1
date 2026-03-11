@@ -113,7 +113,7 @@ export default function SettingsPage() {
                   </Button>
                 </div>
                 <p className="text-xs text-amber-600">
-                  ⚠ Save this key now — it won't be shown again.
+                  ⚠ Save this key now &mdash; it won&apos;t be shown again.
                 </p>
                 <Button variant="danger" size="sm" onClick={revokeKey}>
                   Revoke Key

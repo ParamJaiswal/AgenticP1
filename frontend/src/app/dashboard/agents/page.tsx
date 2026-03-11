@@ -22,7 +22,7 @@ export default function AgentsPage() {
     name: "",
     description: "",
     industry: "general",
-    personality: "professional" as const,
+    personality: "professional" as AgentConfig["personality"],
     greeting_message: "Hello! Thank you for calling. How can I help you today?",
     phone_number: "",
     tools_enabled: {
