@@ -1,0 +1,48 @@
+# Environment
+.env
+.env.prod
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Node
+node_modules/
+.next/
+.turbo/
+frontend/dist/
+frontend/build/
+
+# Data (local storage — not in repo)
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+*.pyc

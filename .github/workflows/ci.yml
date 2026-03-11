@@ -1,0 +1,116 @@
+name: CI/CD — AgenticP1
+
+on:
+  push:
+    branches: [main, "copilot/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-lint:
+    name: Backend Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install ruff mypy pydantic pydantic-settings python-jose passlib structlog
+
+      - name: Lint with ruff
+        run: ruff check .
+
+      - name: Format check with ruff
+        run: ruff format --check .
+
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./test.db
+          JWT_SECRET: test-secret-key
+          REDIS_URL: redis://localhost:6379/0
+          LLM_PROVIDER: groq
+          STT_PROVIDER: groq_whisper
+          TTS_PROVIDER: gtts
+        run: python -m pytest tests/ -v --tb=short --ignore=tests/test_api.py
+
+  frontend-lint:
+    name: Frontend Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+  docker-build:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+    needs: [backend-lint, backend-test, frontend-lint]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: false
+          tags: agenticp1-backend:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: false
+          tags: agenticp1-frontend:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
