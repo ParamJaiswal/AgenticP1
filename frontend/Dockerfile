@@ -3,8 +3,8 @@ FROM node:20-alpine AS base
 # Install dependencies
 FROM base AS deps
 WORKDIR /app
-COPY package.json ./
-RUN npm install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # Build
 FROM base AS builder
