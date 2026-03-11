@@ -1,6 +1,5 @@
 """AgenticP1 — AI Calling Agent Platform — Backend Entry Point."""
 
-
 import structlog
 import uvicorn
 from fastapi import FastAPI
@@ -56,7 +55,9 @@ app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(calls.router, prefix="/api/v1/calls", tags=["Calls"])
 app.include_router(agents.router, prefix="/api/v1/agents", tags=["Agents"])
 app.include_router(analytics.router, prefix="/api/v1/analytics", tags=["Analytics"])
-app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["Knowledge Base"])
+app.include_router(
+    knowledge.router, prefix="/api/v1/knowledge", tags=["Knowledge Base"]
+)
 app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["Webhooks"])
 
 

@@ -124,7 +124,11 @@ async def initiate_call(
     db.add(call)
     await db.flush()
 
-    return {"call_id": call.id, "external_id": call.external_call_id, "status": "initiated"}
+    return {
+        "call_id": call.id,
+        "external_id": call.external_call_id,
+        "status": "initiated",
+    }
 
 
 @router.delete("/{call_id}")

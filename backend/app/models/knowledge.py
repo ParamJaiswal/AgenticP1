@@ -25,7 +25,9 @@ class KnowledgeDocument(Base):
     filename: Mapped[str] = mapped_column(String(512), nullable=False)
     source_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     doc_type: Mapped[str] = mapped_column(String(20), default="file")  # file | url
-    status: Mapped[str] = mapped_column(String(20), default="processing")  # processing | ready | error
+    status: Mapped[str] = mapped_column(
+        String(20), default="processing"
+    )  # processing | ready | error
     chunk_count: Mapped[int] = mapped_column(Integer, default=0)
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

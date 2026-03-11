@@ -128,7 +128,9 @@ class ToolExecutor:
             log.error("Tool execution failed", tool=tool_name, error=str(exc))
             return f"Error executing {tool_name}: {exc}"
 
-    async def execute_llm_response(self, llm_response: str) -> tuple[str | None, str | None]:
+    async def execute_llm_response(
+        self, llm_response: str
+    ) -> tuple[str | None, str | None]:
         """Parse LLM response and execute tool if detected.
 
         Returns:

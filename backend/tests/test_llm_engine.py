@@ -78,7 +78,11 @@ async def test_tool_call_response_format(engine: LLMEngine) -> None:
             "tool_calls": [
                 {
                     "name": "book_appointment",
-                    "arguments": {"date": "2025-01-15", "time": "10:00", "name": "John"},
+                    "arguments": {
+                        "date": "2025-01-15",
+                        "time": "10:00",
+                        "name": "John",
+                    },
                 }
             ]
         }

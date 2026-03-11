@@ -36,8 +36,10 @@ class KnowledgeBaseService:
         if self._embedding_fn is None:
             from chromadb.utils import embedding_functions
 
-            self._embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name=settings.EMBEDDING_MODEL
+            self._embedding_fn = (
+                embedding_functions.SentenceTransformerEmbeddingFunction(
+                    model_name=settings.EMBEDDING_MODEL
+                )
             )
         return self._embedding_fn
 
@@ -121,9 +123,7 @@ class KnowledgeBaseService:
 
         try:
             loop = asyncio.get_event_loop()
-            text = await loop.run_in_executor(
-                None, lambda: docx2txt.process(tmp_path)
-            )
+            text = await loop.run_in_executor(None, lambda: docx2txt.process(tmp_path))
         finally:
             os.unlink(tmp_path)
 
@@ -131,9 +131,7 @@ class KnowledgeBaseService:
             organization_id, text, doc_id, {"filename": filename, "type": "docx"}
         )
 
-    async def add_url(
-        self, organization_id: str, url: str, doc_id: str
-    ) -> int:
+    async def add_url(self, organization_id: str, url: str, doc_id: str) -> int:
         """Scrape URL and add content to knowledge base."""
         import ipaddress
         import re
@@ -145,7 +143,9 @@ class KnowledgeBaseService:
         # Validate URL scheme and prevent SSRF by blocking private/internal addresses
         parsed = urlparse(url)
         if parsed.scheme not in ("http", "https"):
-            raise ValueError(f"Unsupported URL scheme: {parsed.scheme!r}. Only http/https are allowed.")
+            raise ValueError(
+                f"Unsupported URL scheme: {parsed.scheme!r}. Only http/https are allowed."
+            )
 
         hostname = parsed.hostname or ""
         if not hostname:
@@ -156,12 +156,18 @@ class KnowledgeBaseService:
             resolved_ip = socket.getaddrinfo(hostname, None)[0][4][0]
             ip = ipaddress.ip_address(resolved_ip)
             if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
-                raise ValueError(f"Fetching from private/internal addresses is not allowed: {hostname}")
+                raise ValueError(
+                    f"Fetching from private/internal addresses is not allowed: {hostname}"
+                )
         except (socket.gaierror, ValueError) as exc:
-            raise ValueError(f"Invalid or unresolvable URL hostname: {hostname}") from exc
+            raise ValueError(
+                f"Invalid or unresolvable URL hostname: {hostname}"
+            ) from exc
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+            async with session.get(
+                url, timeout=aiohttp.ClientTimeout(total=30)
+            ) as resp:
                 if resp.status != 200:
                     raise RuntimeError(f"Failed to fetch URL: {resp.status}")
                 html = await resp.text()
@@ -189,7 +195,9 @@ class KnowledgeBaseService:
             collection = self._get_collection(organization_id)
             if collection.count() == 0:
                 return []
-            results = collection.query(query_texts=[query_text], n_results=min(k, collection.count()))
+            results = collection.query(
+                query_texts=[query_text], n_results=min(k, collection.count())
+            )
             return results.get("documents", [[]])[0]
 
         return await loop.run_in_executor(None, _query)

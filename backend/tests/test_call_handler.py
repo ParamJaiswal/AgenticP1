@@ -48,10 +48,9 @@ async def test_handle_inbound_call_returns_greeting() -> None:
 
     fake_audio = b"FAKEAUDIO"
 
-    with patch(
-        "app.core.call_handler.get_tts_engine"
-    ) as mock_tts_factory, patch(
-        "app.core.call_handler.get_stt_engine"
+    with (
+        patch("app.core.call_handler.get_tts_engine") as mock_tts_factory,
+        patch("app.core.call_handler.get_stt_engine"),
     ):
         mock_tts = MagicMock()
         mock_tts.synthesize = AsyncMock(return_value=fake_audio)
@@ -81,13 +80,11 @@ async def test_process_audio_chunk_returns_response() -> None:
     mgr = get_conversation_manager()
     await mgr.create("call-456", "agent-1", "org-1")
 
-    with patch(
-        "app.core.call_handler.get_stt_engine"
-    ) as mock_stt_factory, patch(
-        "app.core.call_handler.get_tts_engine"
-    ) as mock_tts_factory, patch(
-        "app.core.call_handler.create_voice_agent"
-    ) as mock_agent_factory:
+    with (
+        patch("app.core.call_handler.get_stt_engine") as mock_stt_factory,
+        patch("app.core.call_handler.get_tts_engine") as mock_tts_factory,
+        patch("app.core.call_handler.create_voice_agent") as mock_agent_factory,
+    ):
         mock_stt = MagicMock()
         mock_stt.transcribe = AsyncMock(return_value="I need help with my order")
         mock_stt_factory.return_value = mock_stt
