@@ -51,7 +51,7 @@ cachetools==5.5.0
 python-slugify==8.0.4
 
 # Telephony
-telnyx==2.2.0
+telnyx==4.65.0
 
 # Billing
 stripe==11.4.0
